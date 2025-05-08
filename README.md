@@ -1,2 +1,3 @@
-# MobileShop
- Tech task receives from EBS Integrator.
+# mobile_shop
+
+A new Flutter project.

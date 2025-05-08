@@ -1,0 +1,61 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:mobile_shop/models/product.dart';
+import 'package:mobile_shop/views/components/image_error.dart';
+
+class ProductImage extends StatelessWidget {
+  final Product product;
+
+  const ProductImage({super.key, required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 240,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(14)),
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: CachedNetworkImage(
+              height: 240,
+              fit: BoxFit.cover,
+              imageUrl: product.icon,
+              placeholder: buildLoadingImage,
+              errorWidget: buildImageError,
+            ),
+          ),
+          buildFavoriteButton(),
+        ],
+      ),
+    );
+  }
+
+  Positioned buildFavoriteButton() {
+    return Positioned(
+      right: 8,
+      top: 8,
+      child: Container(
+        height: 30,
+        width: 30,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25),
+          color: Colors.white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(7.0),
+          child: SvgPicture.asset('assets/images/star.svg'),
+        ),
+      ),
+    );
+  }
+
+  Widget buildImageError(context, url, error) => ImageError(size: 60);
+
+  Widget buildLoadingImage(context, url) => CircularProgressIndicator(
+    padding: EdgeInsets.symmetric(horizontal: 55, vertical: 100),
+    strokeWidth: 2,
+  );
+}
