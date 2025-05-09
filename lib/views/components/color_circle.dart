@@ -12,7 +12,7 @@ class ColorCircle extends StatelessWidget {
       width: 20,
       decoration: BoxDecoration(
         color: color ?? Colors.transparent,
-        border: Border.all(color: Colors.grey.shade200, width: 1),
+        border: color != Colors.white ? null : Border.all(color: Colors.grey.shade200, width: 1),
         borderRadius: BorderRadius.circular(8),
       ),
       child:
