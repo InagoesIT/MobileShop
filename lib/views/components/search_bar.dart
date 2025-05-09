@@ -40,6 +40,7 @@ class _ProductsSearchBarState extends State<ProductsSearchBar> {
     return SizedBox(
       height: 40,
       child: TextField(
+        onTapOutside: (_) => FocusScope.of(context).unfocus(),
         controller: controller,
         onChanged: widget.onSearch,
         cursorHeight: 20,
