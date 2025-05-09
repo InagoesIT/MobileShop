@@ -29,7 +29,7 @@ class ProductViewModel extends ChangeNotifier {
   Future<void> fetchBestSoldProducts() async {
     _isLoading = true;
     notifyListeners();
-
+    
     try {
       final ProductResponse response = await repository.getBestSoldProducts(
         page: currentPage,
@@ -47,7 +47,10 @@ class ProductViewModel extends ChangeNotifier {
   }
 
   void searchProducts(String query) async {
-    // TODO implement
+    _searchedText = query;
+    _currentPage = 1;
+    _totalPages = 0;
+    await fetchBestSoldProducts();
   }
 
   void _handleError(Object error) {
