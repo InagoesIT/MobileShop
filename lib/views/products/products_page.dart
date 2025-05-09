@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_shop/views/categories/categories_list.dart';
 import 'package:mobile_shop/views/components/bottom_nav_bar.dart';
-import 'package:mobile_shop/views/components/custom_text_button.dart';
+import 'package:mobile_shop/views/components/buttons/custom_text_button.dart';
 import 'package:mobile_shop/views/components/product/products_list.dart';
-import 'package:mobile_shop/views/components/products_search_bar.dart';
+import 'package:mobile_shop/views/components/search_bar.dart';
 import 'package:mobile_shop/views/components/section_title.dart';
+import 'package:mobile_shop/views/styling/app_text_styles.dart';
 
 import 'package:provider/provider.dart';
 import 'package:mobile_shop/view_models/products_view_model.dart';
@@ -47,7 +48,7 @@ class ProductsPage extends StatelessWidget {
                     padding: defaultPageEdgeInsets,
                     child: SectionTitle(
                       title: 'Best Selling',
-                      trailing: CustomTextButton(text: 'See all'),
+                      trailing: CustomTextButton(text: 'See all', textStyle: AppTextStyles.roboto16W400,),
                     ),
                   ),
                   const SizedBox(height: 28),

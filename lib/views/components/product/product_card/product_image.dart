@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_shop/models/product.dart';
 import 'package:mobile_shop/views/components/image_error.dart';
 import 'package:mobile_shop/views/components/loading_image.dart';
-import 'package:mobile_shop/views/components/svg_in_circle_button.dart';
+import 'package:mobile_shop/views/components/buttons/svg_in_circle_button.dart';
 
 class ProductImage extends StatelessWidget {
   final Product product;

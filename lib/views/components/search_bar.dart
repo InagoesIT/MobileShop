@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:mobile_shop/views/components/svg_in_circle_button.dart';
+import 'package:mobile_shop/views/components/buttons/svg_in_circle_button.dart';
 
 class ProductsSearchBar extends StatefulWidget {
   final ValueChanged<String> onSearch;

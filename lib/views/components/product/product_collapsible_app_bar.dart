@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile_shop/views/components/image_error.dart';
 import 'package:mobile_shop/views/components/loading_image.dart';
-import 'package:mobile_shop/views/components/svg_in_circle_button.dart';
+import 'package:mobile_shop/views/components/buttons/svg_in_circle_button.dart';
 
 class ProductCollapsibleAppBar extends StatelessWidget {
   final String imageUrl;
@@ -14,27 +14,25 @@ class ProductCollapsibleAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       automaticallyImplyLeading: false,
-      expandedHeight: 480,
+      expandedHeight: MediaQuery.sizeOf(context).height * 0.59,
+      toolbarHeight: MediaQuery.sizeOf(context).height * 0.2,
       pinned: true,
-      flexibleSpace: FlexibleSpaceBar(
-        background: Stack(
+      flexibleSpace: Stack(children: [buildImage(), buildIcons(context)]),
+    );
+  }
+
+  Widget buildIcons(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 52, 16, 44),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            buildImage(),
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 52, 16, 44),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    buildBackButton(context),
-                    SvgInCircleButton(
-                      svgUrl: 'assets/images/star.svg',
-                      circleColor: Colors.white,
-                      svgPadding: const EdgeInsets.all(9.33),
-                    ),
-                  ],
-                ),
-              ),
+            buildBackButton(context),
+            SvgInCircleButton(
+              svgUrl: 'assets/images/star.svg',
+              circleColor: Colors.white,
+              svgPadding: const EdgeInsets.all(9.33),
             ),
           ],
         ),
@@ -53,26 +51,11 @@ class ProductCollapsibleAppBar extends StatelessWidget {
     );
   }
 
-  Widget _buildIcon(
-    BuildContext context,
-    IconData icon,
-    VoidCallback onPressed,
-  ) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.black45,
-          shape: BoxShape.circle,
-        ),
-        child: Icon(icon, color: Colors.white),
-      ),
-    );
-  }
-
   Widget buildImage() {
     return CachedNetworkImage(
+      fit: BoxFit.cover,
+      width: double.infinity,
+      height: double.infinity,
       imageUrl: imageUrl,
       placeholder: (_, _) => LoadingImage(padding: EdgeInsets.all(40)),
       errorWidget: (_, _, _) => ImageError(size: 20),

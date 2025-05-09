@@ -7,7 +7,7 @@ import 'package:mobile_shop/repositories/product_repository.dart';
 import 'package:mobile_shop/repositories/product_repository_impl.dart';
 import 'package:mobile_shop/repositories/product_response.dart';
 import 'package:mobile_shop/view_models/product_details_view_model.dart';
-import 'package:mobile_shop/views/components/toast_shower.dart';
+import 'package:mobile_shop/views/utils/toast_shower.dart';
 import 'package:mobile_shop/views/product_details/product_details_page.dart';
 import 'package:provider/provider.dart';
 

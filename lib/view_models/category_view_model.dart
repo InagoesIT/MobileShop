@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mobile_shop/models/category.dart';
 import 'package:mobile_shop/repositories/category_repository.dart';
-import 'package:mobile_shop/views/components/toast_shower.dart';
+import 'package:mobile_shop/views/utils/toast_shower.dart';
 
 class CategoryViewModel extends ChangeNotifier {
   final CategoryRepository repository;
