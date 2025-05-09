@@ -25,7 +25,7 @@ class InfoCircle extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
-            flex: 1,
+            flex: 2,
             child: Text(
               name,
               style: AppTextStyles.roboto14W400,
@@ -33,7 +33,7 @@ class InfoCircle extends StatelessWidget {
               maxLines: 1,
             ),
           ),
-          Flexible(flex: 2, child: trailing ?? buildDetailsText()),
+          Flexible(flex: 3, child: trailing ?? buildDetailsText()),
         ],
       ),
     );
@@ -41,7 +41,7 @@ class InfoCircle extends StatelessWidget {
 
   Text buildDetailsText() {
     return Text(
-      details!,
+      details,
       style: AppTextStyles.roboto14W700,
       overflow: TextOverflow.ellipsis,
       textAlign: TextAlign.end,
