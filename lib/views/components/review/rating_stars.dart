@@ -10,6 +10,7 @@ class RatingStars extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
+      spacing: 8,
       children: [for (int i = 0; i < stars; i++) buildStar()],
     );
   }
