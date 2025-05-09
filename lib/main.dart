@@ -12,7 +12,9 @@ void main() {
       providers: [
         ChangeNotifierProvider(
           create:
-              (_) => CategoryViewModel(repository: CategoryRepositoryImpl()),
+              (_) =>
+                  CategoryViewModel(repository: CategoryRepositoryImpl())
+                    ..fetchCategories(),
         ),
         ChangeNotifierProvider(
           create:

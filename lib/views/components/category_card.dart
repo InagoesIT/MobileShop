@@ -7,14 +7,25 @@ import 'package:mobile_shop/views/styling/app_text_styles.dart';
 
 class CategoryCard extends StatelessWidget {
   final Category category;
+  final bool isSelected;
+  final void Function(Category) onTap;
 
-  const CategoryCard({super.key, required this.category});
+  const CategoryCard({
+    super.key,
+    required this.category,
+    required this.isSelected,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 60,
-      child: Column(spacing: 14, children: [buildyImage(), buildName()]),
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => onTap(category),
+      child: SizedBox(
+        width: 60,
+        child: Column(spacing: 14, children: [buildyImage(), buildName()]),
+      ),
     );
   }
 
@@ -67,7 +78,8 @@ class CategoryCard extends StatelessWidget {
     return Text(
       category.name,
       textAlign: TextAlign.center,
-      style: AppTextStyles.roboto12W400,
+      style:
+          isSelected ? AppTextStyles.roboto12W600 : AppTextStyles.roboto12W400,
       overflow: TextOverflow.ellipsis,
       maxLines: 2,
     );

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobile_shop/models/category.dart';
 import 'package:mobile_shop/models/product.dart';
 import 'package:mobile_shop/repositories/product_repository.dart';
 import 'package:mobile_shop/repositories/product_response.dart';
@@ -16,20 +17,28 @@ class ProductViewModel extends ChangeNotifier {
   int _currentPage = 1;
   int _totalPages = 0;
   String _searchedText = '';
+  Category? _selectedCategory;
 
   List<Product> get products => _products;
   bool get isLoading => _isLoading;
   bool get isLoadingMore => _isLoadingMore;
   int get currentPage => _currentPage;
+  Category? get selectedCategory => _selectedCategory;
 
   ProductViewModel({required this.repository}) {
     scrollController.addListener(_onScroll);
   }
 
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
   Future<void> fetchBestSoldProducts() async {
     _isLoading = true;
     notifyListeners();
-    
+
     try {
       final ProductResponse response = await repository.getBestSoldProducts(
         page: currentPage,
@@ -51,6 +60,20 @@ class ProductViewModel extends ChangeNotifier {
     _currentPage = 1;
     _totalPages = 0;
     await fetchBestSoldProducts();
+  }
+
+  bool isCategorySelected(Category category){
+    return _selectedCategory?.name == category.name;
+  }
+
+  void selectCategory(Category category){
+    if (_selectedCategory?.name == category.name){
+      _selectedCategory = null;
+    } else{
+    _selectedCategory = category;
+    }
+    notifyListeners();
+    // TODO refetch products list
   }
 
   void _handleError(Object error) {
@@ -92,11 +115,5 @@ class ProductViewModel extends ChangeNotifier {
         scrollController.position.maxScrollExtent - 200) {
       loadMoreProducts();
     }
-  }
-
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
   }
 }

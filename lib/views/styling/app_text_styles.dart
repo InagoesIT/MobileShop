@@ -28,4 +28,10 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
     height: 24 / 16,
   );
+
+  static TextStyle get roboto12W600 => TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+  );
 }

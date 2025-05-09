@@ -7,6 +7,9 @@ import 'package:mobile_shop/views/components/toast_shower.dart';
 
 class CategoryViewModel extends ChangeNotifier {
   final CategoryRepository repository;
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
 
   CategoryViewModel({required this.repository});
 
@@ -15,6 +18,9 @@ class CategoryViewModel extends ChangeNotifier {
   List<Category> get categories => _categories;
 
   Future<void> fetchCategories() async {
+    _isLoading = true;
+    notifyListeners();
+
     try {
       _categories = await repository.getCategories();
     } catch (e) {
@@ -25,6 +31,11 @@ class CategoryViewModel extends ChangeNotifier {
         error = 'Failed to load categories';
       }
       ToastShower.showError(error);
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
+
+
 }
