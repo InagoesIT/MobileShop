@@ -22,6 +22,5 @@ class ErrorPage extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

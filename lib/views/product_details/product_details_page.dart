@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_shop/models/detailed_product.dart';
 import 'package:mobile_shop/view_models/product_details_view_model.dart';
-import 'package:mobile_shop/view_models/products_view_model.dart';
 import 'package:mobile_shop/views/components/color_circle.dart';
 import 'package:mobile_shop/views/components/error_page.dart';
 import 'package:mobile_shop/views/components/info_circle.dart';
