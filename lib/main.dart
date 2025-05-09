@@ -3,7 +3,7 @@ import 'package:mobile_shop/mobile_shop_app.dart';
 import 'package:mobile_shop/repositories/category_repository_impl.dart';
 import 'package:mobile_shop/repositories/product_repository_impl.dart';
 import 'package:mobile_shop/view_models/category_view_model.dart';
-import 'package:mobile_shop/view_models/product_view_model.dart';
+import 'package:mobile_shop/view_models/products_view_model.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -19,7 +19,7 @@ void main() {
         ChangeNotifierProvider(
           create:
               (_) =>
-                  ProductViewModel(repository: ProductRepositoryImpl())
+                  ProductsViewModel(repository: ProductRepositoryImpl())
                     ..fetchBestSoldProducts(),
         ),
       ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:mobile_shop/views/components/camera_icon.dart';
+import 'package:mobile_shop/views/components/svg_in_circle_button.dart';
 
 class ProductsSearchBar extends StatefulWidget {
   final ValueChanged<String> onSearch;
@@ -25,7 +25,14 @@ class _ProductsSearchBarState extends State<ProductsSearchBar> {
   Widget build(BuildContext context) {
     return Row(
       spacing: 13,
-      children: [Expanded(child: buildTextField()), CameraIcon()],
+      children: [
+        Expanded(child: buildTextField()),
+        SvgInCircleButton(
+          svgUrl: 'assets/images/camera.svg',
+          circleColor: Theme.of(context).primaryColor,
+          svgPadding: EdgeInsets.all(8),
+        ),
+      ],
     );
   }
 

@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:mobile_shop/models/product.dart';
 import 'package:mobile_shop/views/components/image_error.dart';
+import 'package:mobile_shop/views/components/loading_image.dart';
+import 'package:mobile_shop/views/components/svg_in_circle_button.dart';
 
 class ProductImage extends StatelessWidget {
   final Product product;
@@ -22,7 +22,7 @@ class ProductImage extends StatelessWidget {
             child: CachedNetworkImage(
               height: 240,
               fit: BoxFit.cover,
-              imageUrl: product.icon,
+              imageUrl: product.image,
               placeholder: buildLoadingImage,
               errorWidget: buildImageError,
             ),
@@ -37,25 +37,18 @@ class ProductImage extends StatelessWidget {
     return Positioned(
       right: 8,
       top: 8,
-      child: Container(
-        height: 30,
-        width: 30,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          color: Colors.white,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(7.0),
-          child: SvgPicture.asset('assets/images/star.svg'),
-        ),
+      child: SvgInCircleButton(
+        svgUrl: 'assets/images/star.svg',
+        circleColor: Colors.white,
+        svgPadding: const EdgeInsets.all(7.0),
+        buttonSize: Size.square(30),
       ),
     );
   }
 
   Widget buildImageError(context, url, error) => ImageError(size: 60);
 
-  Widget buildLoadingImage(context, url) => CircularProgressIndicator(
+  Widget buildLoadingImage(context, url) => LoadingImage(
     padding: EdgeInsets.symmetric(horizontal: 55, vertical: 100),
-    strokeWidth: 2,
   );
 }

@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_shop/models/category.dart';
-import 'package:mobile_shop/models/product.dart';
 import 'package:mobile_shop/views/categories/categories_list.dart';
 import 'package:mobile_shop/views/components/bottom_nav_bar.dart';
 import 'package:mobile_shop/views/components/custom_text_button.dart';
-import 'package:mobile_shop/views/components/products_list.dart';
+import 'package:mobile_shop/views/components/product/products_list.dart';
 import 'package:mobile_shop/views/components/products_search_bar.dart';
 import 'package:mobile_shop/views/components/section_title.dart';
 
 import 'package:provider/provider.dart';
-import 'package:mobile_shop/view_models/product_view_model.dart';
+import 'package:mobile_shop/view_models/products_view_model.dart';
 
 class ProductsPage extends StatelessWidget {
   const ProductsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<ProductViewModel>();
+    final viewModel = context.watch<ProductsViewModel>();
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: CustomScrollView(
-          controller: viewModel.scrollController, // for pagination
+          controller: viewModel.scrollController, 
           slivers: [
             SliverToBoxAdapter(
               child: Column(
@@ -67,7 +65,7 @@ class ProductsPage extends StatelessWidget {
             else
               SliverPadding(
                 padding: defaultPageEdgeInsets,
-                sliver: ProductsList(products: viewModel.products),
+                sliver: ProductsList(products: viewModel.products, onProductTap: viewModel.goToProduct ,),
               ),
             if (viewModel.isLoadingMore)
               const SliverToBoxAdapter(

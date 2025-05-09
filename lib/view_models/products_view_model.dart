@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:mobile_shop/models/category.dart';
 import 'package:mobile_shop/models/product.dart';
 import 'package:mobile_shop/repositories/product_repository.dart';
+import 'package:mobile_shop/repositories/product_repository_impl.dart';
 import 'package:mobile_shop/repositories/product_response.dart';
+import 'package:mobile_shop/view_models/product_details_view_model.dart';
 import 'package:mobile_shop/views/components/toast_shower.dart';
+import 'package:mobile_shop/views/product_details/product_details_page.dart';
+import 'package:provider/provider.dart';
 
-class ProductViewModel extends ChangeNotifier {
+class ProductsViewModel extends ChangeNotifier {
   final int pageSize = 10;
   final ScrollController scrollController = ScrollController();
   final ProductRepository repository;
@@ -25,7 +29,7 @@ class ProductViewModel extends ChangeNotifier {
   int get currentPage => _currentPage;
   Category? get selectedCategory => _selectedCategory;
 
-  ProductViewModel({required this.repository}) {
+  ProductsViewModel({required this.repository}) {
     scrollController.addListener(_onScroll);
   }
 
@@ -35,24 +39,32 @@ class ProductViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  Future<void> fetchBestSoldProducts() async {
-    _isLoading = true;
+  Future<void> fetchBestSoldProducts({setIsLoadingMore = false}) async {
+    if (setIsLoadingMore){
+      _isLoadingMore = true;
+    }
+    else{
+     _isLoading = true;
+    }
     notifyListeners();
 
     try {
       final filteredProducts = await _fetchProducts();
-      _products = filteredProducts;
+      _products.addAll(filteredProducts);
     } catch (error) {
       _handleError(error);
     } finally {
-      _isLoading = false;
+      if (setIsLoadingMore) {
+        _isLoadingMore = false;
+      } else {
+        _isLoading = false;
+      }
       notifyListeners();
     }
   }
 
   Future<List<Product>> _fetchProducts() async {
     List<Product> allProducts = [];
-
     while (allProducts.length < pageSize && currentPage <= _totalPages) {
       final ProductResponse response = await repository.getBestSoldProducts(
         page: currentPage,
@@ -65,7 +77,7 @@ class ProductViewModel extends ChangeNotifier {
       _currentPage++;
       _totalPages = response.totalPages;
     }
-
+    
     return allProducts;
   }
 
@@ -99,9 +111,30 @@ class ProductViewModel extends ChangeNotifier {
     fetchBestSoldProducts();
   }
 
+  void goToProduct(BuildContext context, Product product) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => ChangeNotifierProvider(
+              create: (_) => _initProductDetailsViewModel(product.id),
+              child: ProductDetailsPage(),
+            ),
+      ),
+    );
+  }
+
+  ProductDetailsViewModel _initProductDetailsViewModel(int productId) {
+    return ProductDetailsViewModel(
+      productId: productId,
+      repository: ProductRepositoryImpl(),
+    )..fetchProductById();
+  }
+
   void _resetPagination() {
     _currentPage = 1;
     _totalPages = 1;
+    _products = [];
   }
 
   void _handleError(Object error) {
@@ -114,34 +147,10 @@ class ProductViewModel extends ChangeNotifier {
     ToastShower.showError(message);
   }
 
-  Future<void> loadMoreProducts() async {
-    if (isLoadingMore) return;
-
-    if (_currentPage == _totalPages) return;
-
-    _isLoadingMore = true;
-    _currentPage++;
-    notifyListeners();
-
-    try {
-      final ProductResponse response = await repository.getBestSoldProducts(
-        page: _currentPage,
-        pageSize: pageSize,
-      );
-      _totalPages = response.totalPages;
-      products.addAll(response.products);
-    } catch (error) {
-      _handleError(error);
-    } finally {
-      _isLoadingMore = false;
-      notifyListeners();
-    }
-  }
-
   void _onScroll() {
     if (scrollController.position.pixels >=
         scrollController.position.maxScrollExtent - 200) {
-      loadMoreProducts();
+      fetchBestSoldProducts(setIsLoadingMore: true);
     }
   }
 }

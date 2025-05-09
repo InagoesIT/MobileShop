@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:mobile_shop/models/category.dart';
 import 'package:mobile_shop/views/components/image_error.dart';
+import 'package:mobile_shop/views/components/loading_image.dart';
 import 'package:mobile_shop/views/styling/app_text_styles.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -66,11 +67,8 @@ class CategoryCard extends StatelessWidget {
     return ImageError(size: 20);
   }
 
-  Widget buildLoadingImage(context, url) => CircularProgressIndicator(
-    padding: EdgeInsets.all(18),
-    strokeWidth: 2,
-    color: HexColor('#a8a7a7'),
-  );
+  Widget buildLoadingImage(context, url) =>
+      LoadingImage(padding: EdgeInsets.all(18));
 
   BorderRadius get imageBorderRadius => BorderRadius.circular(30);
 

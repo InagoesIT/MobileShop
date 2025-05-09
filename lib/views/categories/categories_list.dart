@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_shop/models/category.dart';
-import 'package:mobile_shop/view_models/product_view_model.dart';
+import 'package:mobile_shop/view_models/products_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile_shop/view_models/category_view_model.dart';
 import 'package:mobile_shop/views/components/category_card.dart';
@@ -11,28 +11,28 @@ class CategoriesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final categoryViewModel = context.watch<CategoryViewModel>();
-    final productViewModel = context.read<ProductViewModel>();
+    final productsViewModel = context.read<ProductsViewModel>();
 
-    context.select<ProductViewModel, Category?>(
+    context.select<ProductsViewModel, Category?>(
       (viewModel) => viewModel.selectedCategory,
     );
 
     return SizedBox(
       height: 110,
-      child: _buildContent(categoryViewModel, productViewModel),
+      child: _buildContent(categoryViewModel, productsViewModel),
     );
   }
 
   Widget _buildContent(
     CategoryViewModel categoryViewModel,
-    ProductViewModel productViewModel,
+    ProductsViewModel productsViewModel,
   ) {
     if (categoryViewModel.isLoading) {
       return buildLoadingIndicator();
     } else if (categoryViewModel.categories.isEmpty) {
       return buildNoCategoriesMessage();
     } else {
-      return buildList(categoryViewModel.categories, productViewModel);
+      return buildList(categoryViewModel.categories, productsViewModel);
     }
   }
 
@@ -46,7 +46,7 @@ class CategoriesList extends StatelessWidget {
 
   ListView buildList(
     List<Category> categories,
-    ProductViewModel productViewModel,
+    ProductsViewModel productsViewModel,
   ) {
     return ListView.separated(
       scrollDirection: Axis.horizontal,
@@ -57,8 +57,8 @@ class CategoriesList extends StatelessWidget {
 
         return CategoryCard(
           category: category,
-          isSelected: productViewModel.isCategorySelected(category),
-          onTap: productViewModel.selectCategory,
+          isSelected: productsViewModel.isCategorySelected(category),
+          onTap: productsViewModel.selectCategory,
         );
       },
     );
