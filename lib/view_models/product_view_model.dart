@@ -15,7 +15,7 @@ class ProductViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool _isLoadingMore = false;
   int _currentPage = 1;
-  int _totalPages = 0;
+  int _totalPages = 1;
   String _searchedText = '';
   Category? _selectedCategory;
 
@@ -40,13 +40,8 @@ class ProductViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final ProductResponse response = await repository.getBestSoldProducts(
-        page: currentPage,
-        pageSize: pageSize,
-        searchedText: _searchedText
-      );
-      _totalPages = response.totalPages;
-      _products = response.products;
+      final filteredProducts = await _fetchProducts();
+      _products = filteredProducts;
     } catch (error) {
       _handleError(error);
     } finally {
@@ -55,25 +50,58 @@ class ProductViewModel extends ChangeNotifier {
     }
   }
 
+  Future<List<Product>> _fetchProducts() async {
+    List<Product> allProducts = [];
+
+    while (allProducts.length < pageSize && currentPage <= _totalPages) {
+      final ProductResponse response = await repository.getBestSoldProducts(
+        page: currentPage,
+        pageSize: pageSize,
+        searchedText: _searchedText,
+      );
+
+      List<Product> filteredProducts = _filterByCategory(response.products);
+      allProducts.addAll(filteredProducts);
+      _currentPage++;
+      _totalPages = response.totalPages;
+    }
+
+    return allProducts;
+  }
+
+  List<Product> _filterByCategory(List<Product> products) {
+    if (selectedCategory == null) {
+      return products;
+    }
+    return products
+        .where((product) => product.categoryName == _selectedCategory?.name)
+        .toList();
+  }
+
   void searchProducts(String query) async {
     _searchedText = query;
-    _currentPage = 1;
-    _totalPages = 0;
+    _resetPagination();
     await fetchBestSoldProducts();
   }
 
-  bool isCategorySelected(Category category){
+  bool isCategorySelected(Category category) {
     return _selectedCategory?.name == category.name;
   }
 
-  void selectCategory(Category category){
-    if (_selectedCategory?.name == category.name){
+  void selectCategory(Category category) {
+    _resetPagination();
+    if (_selectedCategory?.name == category.name) {
       _selectedCategory = null;
-    } else{
-    _selectedCategory = category;
+    } else {
+      _selectedCategory = category;
     }
     notifyListeners();
-    // TODO refetch products list
+    fetchBestSoldProducts();
+  }
+
+  void _resetPagination() {
+    _currentPage = 1;
+    _totalPages = 1;
   }
 
   void _handleError(Object error) {
